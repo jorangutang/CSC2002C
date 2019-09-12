@@ -15,12 +15,14 @@ public class DriverClassify {
 
 
     public static void main(String[] args) {
+
         CloudData cloudData = new CloudData();
         CloudOutput result = new CloudOutput();
-        String filename = "";
+
         String outputFile = "";
+
         if (args.length==0){
-            cloudData.readData(filename);
+            cloudData.readData("simplesample_input.txt");
             outputFile = "output.txt";
         }
         else{
@@ -42,7 +44,7 @@ public class DriverClassify {
         System.out.println(cloudData.dimt + "  " + cloudData.dimx + "  " + cloudData.dimy);
         // System.out.println("last: "+vectorArray[5242879].boundaryClassification); //should be 8
 
-
+/*
 
         int [] cutoffs = {20000, 120000, 220000, 320000, 420000, 520000, 620000, 720000, 820000, 920000, 1020000, 1120000, 1220000, 1320000, 1420000, 1520000};
         for (int j = 0; j <2 ; j++) {
@@ -69,7 +71,9 @@ public class DriverClassify {
 
 
 
+*/
 
+        result = sum(vectorArray, 120000);
 
 
 
@@ -83,15 +87,16 @@ public class DriverClassify {
 
         System.out.println(x_av);
         System.out.println(y_av);
-        Vector Vwrite = new Vector((float)x_av, (float)y_av);
-        result.CD.writeData(outputFile, Vwrite);  //DATA WRITTEN
 
+
+        Vector Vwrite = new Vector((float)x_av, (float)y_av); //diff
+        result.CD.writeData(outputFile, Vwrite);  //DATA WRITTEN
 
 
     }
     static final ForkJoinPool fjPool = new ForkJoinPool();
-    static CloudOutput sum(Vector [] vectorArray, int sequential_cutoff){
-        return fjPool.invoke(new windforkjoin(0,vectorArray.length, vectorArray, dimt, dimx, dimy, convection, classification, sequential_cutoff));
+    static CloudOutput sum(Vector [] vectorArray, int cutoff){
+        return fjPool.invoke(new windforkjoin(0,vectorArray.length, vectorArray, dimt, dimx, dimy, convection, classification, cutoff));
     }
 
 }

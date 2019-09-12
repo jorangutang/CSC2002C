@@ -6,51 +6,53 @@ import java.util.concurrent.RecursiveTask;
  */
 public class windforkjoin extends RecursiveTask<CloudOutput> {
 
-    public static int x,y,t;
-    public static float[][][] convection;
-    public static int[][][] classification;
+    static int dimx,dimy,dimt;
+    static float[][][] convection;
+    static int[][][] classification;
 
     private static int cutoff;
     int high, low;
+
     Vector[] vectors;
-    Vector v;
-    CloudData outClouddata = new CloudData(x,y,t,convection,classification);
-
-    CloudOutput outobject = new CloudOutput(outClouddata, v);
+    CloudOutput outobject = new CloudOutput(new CloudData(dimx, dimy, dimt, convection, classification), new Vector());
 
 
-    public windforkjoin(int low, int high, Vector[] vectors, int t, int x, int y,
-                        float[][][] convection, int[][][] classification, int cutoff ){
+    windforkjoin(){}
+    windforkjoin(int low, int high, Vector [] vecArray, int t, int x, int y, float [][][] connvection, int [][][] classification, int cutoff){
         this.low = low;
         this.high = high;
-        this.vectors = vectors;
-        this.t = t;
-        this.x = x;
-        this.y = y;
-        this.convection = convection;
+        this.vectors = vecArray;
+        this.dimx = x;
+        this.dimt = t;
+        this.dimy = y;
+        this.convection = connvection;
         this.classification = classification;
         this.cutoff = cutoff;
     }
-    windforkjoin(){}
 
 
-    @Override
+  //  @Override
     protected CloudOutput compute() {
 
         if (high -  low < cutoff){
             for (int i = low; i < high; i++){
                 outobject.V.x += vectors[i].x;
                 outobject.V.y += vectors[i].y;
-                CloudClassifier(outobject.CD, i, vectors);
+                try {
+                    CloudClassifier(outobject.CD, i, vectors);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             return outobject;
         }
         else {
             int mid = low + high /2;
 
-            windforkjoin left = new windforkjoin(low, mid,vectors, t, x, y, convection, classification, cutoff);
-            windforkjoin right = new windforkjoin(mid, high, vectors, t, x, y, convection, classification, cutoff);
+            windforkjoin left = new windforkjoin(low, mid,vectors, dimt, dimx, dimy, convection, classification, cutoff);
+            windforkjoin right = new windforkjoin(mid, high, vectors, dimt, dimx, dimy, convection, classification, cutoff);
             left.fork();
+
             CloudOutput resultR = right.compute();
             CloudOutput resultL = left.join();
 
@@ -61,9 +63,10 @@ public class windforkjoin extends RecursiveTask<CloudOutput> {
         }
     }
 
-    public void CloudClassifier(CloudData cloudData, int i, Vector[] vectors){
+    public void CloudClassifier(CloudData cloudData, int i, Vector[] vectors) throws Exception{
         int [] ind = new int[3];
         cloudData.locate(i,ind);
+
         String bound = vectors[i].boundaryclass;
         float convection = cloudData.convection[ind[0]][ind[1]][ind[2]];
 
@@ -131,7 +134,6 @@ public class windforkjoin extends RecursiveTask<CloudOutput> {
             classification[ind[0]][ind[1]][ind[2]] = 0;
         }
 
-        
     }
 
 }
