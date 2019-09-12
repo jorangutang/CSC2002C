@@ -33,7 +33,5 @@ public class SequentialWeather {
         return out;
     }
 
-    public float localAv()
-
 
 }
