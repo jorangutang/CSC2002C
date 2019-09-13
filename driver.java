@@ -28,7 +28,7 @@ public class driver {
 
 
         int cores = Runtime.getRuntime().availableProcessors() ;
-        ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
+        ForkJoinPool pool = new ForkJoinPool(cores);
         CloudThread cloudThread = new CloudThread(0, cloudData.advection.length, cloudData  );
 
         long time1 = System.currentTimeMillis();

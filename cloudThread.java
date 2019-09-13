@@ -6,7 +6,7 @@ import java.util.concurrent.RecursiveAction;
  */
 public class CloudThread extends RecursiveAction {
 
-    private static int seqcutoff = 4;
+    private static int seqcutoff = 50000;
     int low, high;
     CloudData indata;
 
