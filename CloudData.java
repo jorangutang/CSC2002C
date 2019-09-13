@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.Vector;
 
 public class CloudData {
 
@@ -94,60 +93,45 @@ public class CloudData {
         boolean bottomBoundary = false;
 
 
-        //CHECK IF ON LEFT BOUNDARY
-        for (int j = 0; j <= dim()-dimy; j+=dimy) {
-            if(i ==j)
-                leftBoundary=true;
-
-        }
-        //CHECK IF ON RIGHT BOUNDARY
         for (int j = dimx-1; j <= dim(); j+=dimx) {
             if(i ==j)
                 rightBoundary=true;
         }
 
-        //CHECK IF ON TOP BOUNDARY of TIME LAYER
-        for (int j = 0; j <= dim()-1; j+= (dimy*dimy)) {
-            for (int k = j; k < (j+dimy) ; k++) {
-                if(i==k)
-                    topBoundary=true;
-
-            }
-
+        for (int j = 0; j <= dim()-dimy; j+=dimy) {
+            if(i ==j)
+                leftBoundary=true;
         }
-        //CHECK IF ON BOTTOM BOUNDARY of TIME LAYER
-        for (int j = (dimy*dimy-dimy); j < dim()-1; j+= (dimy*dimy)) {
+        for (int j = (dimy*dimy-dimy); j < dim() - 1; j+= (dimy*dimy)) {
             for (int k = j; k < (j+dimy) ; k++) {
                 if (i==k)
                     bottomBoundary=true;
             }
-
         }
+        for (int j = 0; j <= dim()-1; j+= (dimy*dimy)) {
+            for (int k = j; k < (j+dimy) ; k++) {
+                if(i==k)
+                    topBoundary=true;
+            }
+        }
+
 
         if(topBoundary){
             if(leftBoundary)
                 vector.boundclass=5;
             else if(rightBoundary)
                 vector.boundclass=6;
-            else
-                vector.boundclass=2;
-
-        }
-        else if (bottomBoundary){
+            else vector.boundclass=2;
+        } else if (bottomBoundary){
             if(leftBoundary)
                 vector.boundclass=7;
             else if(rightBoundary)
                 vector.boundclass=8;
-            else
-                vector.boundclass=4;
-        }
-        else if(rightBoundary)
+            else vector.boundclass=4;
+        } else if(rightBoundary)
             vector.boundclass=3;
         else if(leftBoundary)
             vector.boundclass=1;
-        else
-            vector.boundclass=0; //normal
-
+        else vector.boundclass=0;
     }
-
 }

@@ -6,8 +6,6 @@ public class windVector {
 
     float x;
     float y;
-    float localx;
-    float localy;
     float convection;
     int boundclass;
 

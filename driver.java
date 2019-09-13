@@ -11,7 +11,6 @@ public class driver {
         String outputFile;
 
         if (args.length==0){
-
             cloudData.readData("simplesample_input.txt");
             outputFile = "output.txt";
         }
@@ -19,22 +18,23 @@ public class driver {
             cloudData.readData(args[0]);
             outputFile = args[1];
         }
-        System.out.println(cloudData.advection[1].x);
-        System.out.println(cloudData.advection[1].y);
-        System.out.println(cloudData.advection[1].convection);
 
+
+        System.out.println( Runtime.getRuntime().availableProcessors());
         ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
+
         CloudThread cloudThread = new CloudThread(0, cloudData.advection.length, cloudData  );
         pool.invoke(cloudThread);
 
+        float xav = cloudData.xtot /cloudData.dim();
+        float yav = cloudData.ytot /cloudData.dim();
 
-        windVector out = new windVector(cloudData.xtot, cloudData.ytot, 0);
+        windVector out = new windVector(xav, yav, 0);
 
         cloudData.writeData(outputFile, out);
 
-
-        //methodcall
     }
+
 
 
 
