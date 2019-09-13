@@ -5,6 +5,12 @@ import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
+/**
+ * this class was provided on vula
+ * javadocs for editing and addition is supplied:
+ *
+ * a few instance variables were removed as this seemed to be some sort of a greedy problem
+ */
 public class CloudData {
 
 	windVector [] advection; // in-plane regular grid of wind vectors, that evolve over time
@@ -28,6 +34,11 @@ public class CloudData {
 	}
 	
 	// read cloud simulation data from file
+
+    /**
+     * this method was edited at the scanning part due to the lack of a #D array
+     * @param fileName
+     */
 	void readData(String fileName){ 
 		try{ 
 			Scanner sc = new Scanner(new File(fileName), "UTF-8");
@@ -86,6 +97,14 @@ public class CloudData {
 				e.printStackTrace();
 		 }
 	}
+
+    /**
+     * this method classifies a vectors' position in a 2D boxed space
+     * this method is necessary for computing local averages
+     * it does this by using the index of the item in a 1D array and dividing by the necessary dimensions
+     * @param i position in 1D array
+     * @param vector the vector in the array
+     */
     public void BClassifier(int i, windVector vector){
         boolean leftBoundary = false;
         boolean rightBoundary = false;

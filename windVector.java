@@ -1,7 +1,9 @@
 /**
  * @author Jesse Smart
  * SMRJES001
+ * This is the vector object
  */
+
 public class windVector {
 
     float x;
@@ -9,7 +11,12 @@ public class windVector {
     float convection;
     int boundclass;
 
-    windVector(){}
+    /**
+     * constructor for vector object
+     * @param x
+     * @param y
+     * @param convection
+     */
     windVector(float x, float y, float convection){
         this.x = x;
         this.y = y;

@@ -6,17 +6,29 @@ import java.util.concurrent.RecursiveAction;
  */
 public class CloudThread extends RecursiveAction {
 
-    private static int seqcutoff = 1;
+    private static int seqcutoff = 4;
     int low, high;
     CloudData indata;
 
+    /**
+     *
+     * @param low for threshhold calculations
+     * @param high ditto
+     * @param input this is the data object passed through threads
+     */
     public CloudThread(int low, int high, CloudData input) {
         this.low = low;
         this.high = high;
         indata = input;
     }
 
+
     @Override
+    /**
+     * compute method from forkjoin framework
+     * this method is the divide and conquer decider
+     * the actual computing and problem solving method calling happens in the sequential else part of the method
+     */
     protected void compute() {
         if ((high - low) > seqcutoff) {
             int mid = (high + low) / 2;
@@ -36,7 +48,11 @@ public class CloudThread extends RecursiveAction {
         }
     }
 
-
+    /**
+     *
+     * @param wind  vector object that needs to be classifiec
+     * @param index the position in the array
+     */
     public void classification (windVector wind, int index){
 
         int [] ind = new int[3];
@@ -44,9 +60,8 @@ public class CloudThread extends RecursiveAction {
         float convection = wind.convection;
         int boundclass = wind.boundclass;
         windVector[] vectors = indata.advection;
-
-        double localX = 0.0;
-        double localY = 0.0;
+        double localX;
+        double localY;
 
 
 
@@ -76,8 +91,6 @@ public class CloudThread extends RecursiveAction {
                     + vectors[index-indata.dimy].y + vectors[index-indata.dimy+1].y)/6.0;
             localX= (vectors[index].x + vectors[index+1].x + vectors[index+indata.dimy].x+ vectors[index+indata.dimy+1].x
                     + vectors[index-indata.dimy].x + vectors[index-indata.dimy+1].x)/6.0;
-
-
         }
         else if(boundclass==2) {
 
@@ -86,10 +99,8 @@ public class CloudThread extends RecursiveAction {
 
             localX = (vectors[index].x + vectors[index+1].x + vectors[index-1].x+ vectors[index+indata.dimy].x
                     + vectors[index+indata.dimy-1].x + vectors[index+indata.dimy+1].x)/6.0;
-
         }
         else if (boundclass == 3) {
-
             localY = (vectors[index].y + vectors[index-1].y + vectors[index+indata.dimy].y+ vectors[index+indata.dimy-1].y
                     + vectors[index-indata.dimy].y + vectors[index-indata.dimy-1].y)/6.0;
 
