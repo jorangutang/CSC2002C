@@ -6,10 +6,8 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 
 /**
- * this class was provided on vula
- * javadocs for editing and addition is supplied:
- *
- * a few instance variables were removed as this seemed to be some sort of a greedy problem
+ * Cloud Date object,
+ * 
  */
 public class CloudData {
 
